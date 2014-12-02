@@ -17,7 +17,7 @@ public interface BookmarkService extends CrudService {
 	public void updateBookmark(UserInfos user, String bookmarkId, JsonObject data,
 			Handler<Either<String, JsonObject>> handler);
 
-	public void deleteBookmark(UserInfos user, String bookmarkId, JsonObject data,
+	public void deleteBookmark(UserInfos user, String bookmarkId,
 			Handler<Either<String, JsonObject>> handler);
 
 	public void getBookmarks(UserInfos user, Handler<Either<String, JsonObject>> handler);

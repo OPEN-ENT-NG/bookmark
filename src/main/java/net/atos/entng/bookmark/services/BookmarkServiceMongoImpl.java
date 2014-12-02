@@ -85,7 +85,7 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 
 
 	@Override
-	public void deleteBookmark(UserInfos user, String bookmarkId, JsonObject data,
+	public void deleteBookmark(UserInfos user, String bookmarkId,
 			Handler<Either<String, JsonObject>> handler) {
 
 		// Query

@@ -114,13 +114,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 			public void handle(final UserInfos user) {
 				if (user != null) {
 					final String id = request.params().get("id");
-
-					RequestUtils.bodyToJson(request, new Handler<JsonObject>() {
-						@Override
-						public void handle(JsonObject data) {
-							bookmarkService.deleteBookmark(user, id, data, defaultResponseHandler(request));
-						}
-					});
+					bookmarkService.deleteBookmark(user, id, defaultResponseHandler(request));
 				}
 			}
 		});

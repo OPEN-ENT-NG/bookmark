@@ -11,10 +11,13 @@
 	"bookmark.widget.createform.save" : "Enregistrer",
 	"bookmark.widget.createform.cancel" : "Annuler",
 	
-	"bookmark.widget.manageform.title" : "Gérer les signets",
-	"bookmark.widget.manageform.edit" : "Modifier",
-	"bookmark.widget.manageform.delete" : "Supprimer",
+	"bookmark.widget.manage.title" : "Gérer les signets",
 	"bookmark.widget.managetable.name" : "Nom",
-	"bookmark.widget.managetable.url" : "Adresse"
-		
+	"bookmark.widget.managetable.url" : "Adresse",
+
+	"bookmark.widget.editform.name" : "Nom",
+	"bookmark.widget.editform.url" : "Adresse",
+	"bookmark.widget.editform.save" : "Enregistrer",
+	"bookmark.widget.editform.cancel" : "Annuler"
+
 }

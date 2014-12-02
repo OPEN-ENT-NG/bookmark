@@ -1,23 +1,26 @@
+<!-- TODO : create css class "bookmark-widget" in springboard-neo -->
+
 <div class="widget bookmark-widget">
-<!-- TODO : css class "bookmark-widget" -->
 
 	<h1><i18n>bookmark.widget.title</i18n></h1>
+	
 	<ul class="row">
-		<li ng-repeat="bookmark in widget.bookmarks">
-			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
-		</li>
-		<li ng-if="!widget.bookmarks || widget.bookmarks.length === 0">
+		<div ng-if="!widget.bookmarks.isEmpty()">
+			<li ng-repeat="bookmark in widget.bookmarks.all">
+				<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
+			</li>
+		</div>
+		<li ng-if="widget.bookmarks.isEmpty()">
 			<i18n>bookmark.widget.empty</i18n>
 		</li>
 	</ul>
-	
+
 	<div class="row" >
-		<button ng-click="widget.newBookmark()">
-			<i18n>bookmark.widget.new.bookmark</i18n>
-		</button>
-		<button ng-if="widget.bookmarks && widget.bookmarks.length !== 0"" ng-click="widget.manageBookmarks()">
-			<i18n>bookmark.widget.manage.bookmarks</i18n>
-		</button>
+      <i class="show-admin right-magnet" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
+       translate-attr="tooltip" tooltip="bookmark.widget.manage.bookmarks"></i>
+       <button class="right-magnet" ng-click="widget.newBookmark()">
+               <i18n>bookmark.widget.new.bookmark</i18n>
+       </button>
 	</div>
 	
 	<lightbox show="widget.display.newBookmark" on-close="widget.display.newBookmark = false">
@@ -43,7 +46,7 @@
 	</lightbox>
 	
 	<lightbox show="widget.display.manage" on-close="widget.display.manage = false">
-		<h2><i18n>bookmark.widget.manageform.title</i18n></h2>
+		<h2><i18n>bookmark.widget.manage.title</i18n></h2>
 		<table class="list-view twelve">
 			<thead>
 				<tr>
@@ -53,15 +56,33 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="bookmark in widget.bookmarks">
-					<td>[[bookmark.name]]</td>
-					<td>[[bookmark.url]]</td>
-					<td class="drop-line" ng-click="bookmark.deleteBookmark()"></td>
+				<tr ng-repeat="bookmark in widget.bookmarks.all">
+					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.name]]</td>
+					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.url]]</td>
+					<!--  TODO : create css class "drop-line bookmark-widget" -->
+					<td class="bookmark-widget drop-line" ng-click="bookmark.deleteBookmark()"></td>
 				</tr>
 			</tbody>
 		</table>
 		<hr class="row"/>
-<!-- 		<div class="row" ng-if=""> -->
-<!-- 		</div> -->
+		
+		<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
+			<div class="row">
+				<label class="one cell"><i18n>bookmark.widget.editform.name</i18n></label>
+				<input type="text" ng-model="widget.editedBookmark.name" class="eleven cell" />
+			</div>
+			<div class="row">
+				<label class="one cell"><i18n>bookmark.widget.editform.url</i18n></label>
+				<input type="text" ng-model="widget.editedBookmark.url" class="eleven cell" />
+			</div>
+			<div class="row">
+				<button class="right-magnet" ng-click="widget.editedBookmark.updateBookmark()">
+					<i18n>bookmark.widget.editform.save</i18n> 
+				</button>
+				<button class="right-magnet cancel" ng-click="widget.cancelEdit()">
+					<i18n>bookmark.widget.editform.cancel</i18n>
+				</button>
+			</div>
+		</article>
 	</lightbox>
 </div>
