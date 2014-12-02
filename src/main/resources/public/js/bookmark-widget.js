@@ -17,7 +17,10 @@ Bookmark.prototype.createBookmark = function() {
 		model.bookmarks.push(this);
 		bookmarkWidget.display.newBookmark = false;
 		model.widgets.apply('bookmarks');
-	}.bind(this));
+	}.bind(this))
+	.e400(function(response){
+		notify.error(JSON.parse(response.responseText).error);
+	});
 };
 
 Bookmark.prototype.updateBookmark = function() {
@@ -29,6 +32,8 @@ Bookmark.prototype.updateBookmark = function() {
 		aBookmark.updateData(that);
 		model.widgets.apply('bookmarks');
 		bookmarkWidget.editedBookmark = new Bookmark();
+	}).e400(function(response){
+		notify.error(JSON.parse(response.responseText).error);
 	});
 };
 
@@ -52,8 +57,8 @@ bookmarkWidget.newBookmark = function() {
 	if(!bookmarkWidget.display) {
 		bookmarkWidget.display = {};
 	}
+	bookmarkWidget.bookmark = new Bookmark( { url : "http://" } );
 	bookmarkWidget.display.newBookmark = true;
-	bookmarkWidget.bookmark = new Bookmark( { name : "http://" } );
 };
 
 bookmarkWidget.manageBookmarks = function() {

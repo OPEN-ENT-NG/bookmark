@@ -18,6 +18,8 @@
 	"bookmark.widget.editform.name" : "Nom",
 	"bookmark.widget.editform.url" : "Adresse",
 	"bookmark.widget.editform.save" : "Enregistrer",
-	"bookmark.widget.editform.cancel" : "Annuler"
+	"bookmark.widget.editform.cancel" : "Annuler",
+	
+	"bookmark.widget.bad.request.invalid.url" : "L'addresse saisie est invalide."
 
 }

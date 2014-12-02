@@ -2,6 +2,10 @@ package net.atos.entng.bookmark.controllers;
 
 import static org.entcore.common.http.response.DefaultResponseHandler.defaultResponseHandler;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import net.atos.entng.bookmark.services.BookmarkService;
 import net.atos.entng.bookmark.services.BookmarkServiceMongoImpl;
 
@@ -20,11 +24,13 @@ import fr.wseduc.rs.Put;
 import fr.wseduc.security.ActionType;
 import fr.wseduc.security.SecuredAction;
 import fr.wseduc.webutils.Either;
+import fr.wseduc.webutils.I18n;
 import fr.wseduc.webutils.request.RequestUtils;
 
 public class BookmarkController extends MongoDbControllerHelper {
 
 	private final BookmarkService bookmarkService;
+	private static final I18n i18n = I18n.getInstance();
 
 	public BookmarkController(String collection) {
 		super(collection);
@@ -62,6 +68,15 @@ public class BookmarkController extends MongoDbControllerHelper {
 						public void handle(JsonObject data) {
 							final String newBookmarkId =  bookmarkService.newObjectId();
 
+							String url = data.getString("url");
+							if(!isValidURL(url)) {
+								String errorMessage = i18n.translate(
+										"bookmark.widget.bad.request.invalid.url",
+										I18n.acceptLanguage(request));
+								badRequest(request, errorMessage);
+								return;
+							}
+
 							bookmarkService.createBookmark(user, newBookmarkId, data, new Handler<Either<String, JsonObject>>() {
 								@Override
 								public void handle(Either<String, JsonObject> event) {
@@ -97,6 +112,15 @@ public class BookmarkController extends MongoDbControllerHelper {
 					RequestUtils.bodyToJson(request, pathPrefix + "createOrUpdateBookmark", new Handler<JsonObject>() {
 						@Override
 						public void handle(JsonObject data) {
+							String url = data.getString("url");
+							if(!isValidURL(url)) {
+								String errorMessage = i18n.translate(
+										"bookmark.widget.bad.request.invalid.url",
+										I18n.acceptLanguage(request));
+								badRequest(request, errorMessage);
+								return;
+							}
+
 							bookmarkService.updateBookmark(user, id, data, defaultResponseHandler(request));
 						}
 					});
@@ -118,6 +142,19 @@ public class BookmarkController extends MongoDbControllerHelper {
 				}
 			}
 		});
+	}
+
+	private static boolean isValidURL(String url) {
+		try {
+			URL aURL = new URL(url);
+			aURL.toURI();
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
+		}
+		catch (URISyntaxException e) {
+			return false;
+		}
 	}
 
 }
