@@ -1,24 +1,64 @@
 <!-- TODO : create css class "bookmark-widget" in springboard-neo -->
+<style>
+    .bookmark-widget.drop-line {
+	  background: url("/assets/themes/neo/img/icons/close-cross.png") no-repeat center;
+    }
+	.bookmark-widget.widget {
+	  width: 100%;
+	  background: #c0b192;
+	  font-weight: normal;
+	  margin-bottom: 15px;
+	}
+	.bookmark-widget.widget .bookmark-button {
+	  margin-top: 10px;
+	  margin-bottom: 10px;
+	  margin-left: auto;
+	  margin-right: auto;
+	  display: block;
+	}
+	.bookmark-widget.widget .brown-background {
+	  background-color: #786c5c;
+	}
+	.bookmark-widget.widget h1 {
+	  color: #fff;
+	}
+	.bookmark-widget.widget ul {
+	  padding: 10px;
+	  margin: 0;
+	}
+	.bookmark-widget.widget ul li {
+	  list-style-type: none;
+	  color: #786c5c;
+	}
+	.bookmark-widget.widget a {
+	  color: #fff;
+	}
+	.bookmark-widget.widget tbody tr:hover {
+	  background: #e4e4da;
+	}
+	.bookmark-widget.widget .selected {
+	  background: #e4e4da;
+	}
+</style>
+
 
 <div class="widget bookmark-widget">
 
 	<h1><i18n>bookmark.widget.title</i18n></h1>
 	
-	<ul class="row">
-		<div ng-if="!widget.bookmarks.isEmpty()">
-			<li ng-repeat="bookmark in widget.bookmarks.all">
-				<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
-			</li>
-		</div>
-		<li ng-if="widget.bookmarks.isEmpty()">
-			<i18n>bookmark.widget.empty</i18n>
+	<ul class="row" ng-if="!widget.bookmarks.isEmpty()">
+		<li ng-repeat="bookmark in widget.bookmarks.all">
+			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
 		</li>
 	</ul>
+	<span ng-if="widget.bookmarks.isEmpty()">
+		<i18n>bookmark.widget.empty</i18n>
+	</span>
 
 	<div class="row" >
-      <i class="show-admin right-magnet" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
+      <i class="show-admin right-magnet bookmark-button" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
        translate-attr="tooltip" tooltip="bookmark.widget.manage.bookmarks"></i>
-       <button class="right-magnet" ng-click="widget.newBookmark()">
+       <button class="right-magnet bookmark-button brown-background" ng-click="widget.newBookmark()">
                <i18n>bookmark.widget.new.bookmark</i18n>
        </button>
 	</div>
@@ -56,10 +96,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="bookmark in widget.bookmarks.all">
+				<tr ng-repeat="bookmark in widget.bookmarks.all" ng-class="{ selected : widget.editedBookmark && bookmark._id === widget.editedBookmark._id }">
 					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.name]]</td>
 					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.url]]</td>
-					<!--  TODO : create css class "drop-line bookmark-widget" -->
 					<td class="bookmark-widget drop-line" ng-click="bookmark.deleteBookmark()"></td>
 				</tr>
 			</tbody>
@@ -67,6 +106,7 @@
 		<hr class="row"/>
 		
 		<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
+			<h3><i18n>bookmark.widget.edit.bookmark</i18n></h3>
 			<div class="row">
 				<label class="one cell"><i18n>bookmark.widget.editform.name</i18n></label>
 				<input type="text" ng-model="widget.editedBookmark.name" class="eleven cell" />
