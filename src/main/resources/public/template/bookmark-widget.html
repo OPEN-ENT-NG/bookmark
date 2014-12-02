@@ -1,0 +1,67 @@
+<div class="widget bookmark-widget">
+<!-- TODO : css class "bookmark-widget" -->
+
+	<h1><i18n>bookmark.widget.title</i18n></h1>
+	<ul class="row">
+		<li ng-repeat="bookmark in widget.bookmarks">
+			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
+		</li>
+		<li ng-if="!widget.bookmarks || widget.bookmarks.length === 0">
+			<i18n>bookmark.widget.empty</i18n>
+		</li>
+	</ul>
+	
+	<div class="row" >
+		<button ng-click="widget.newBookmark()">
+			<i18n>bookmark.widget.new.bookmark</i18n>
+		</button>
+		<button ng-if="widget.bookmarks && widget.bookmarks.length !== 0"" ng-click="widget.manageBookmarks()">
+			<i18n>bookmark.widget.manage.bookmarks</i18n>
+		</button>
+	</div>
+	
+	<lightbox show="widget.display.newBookmark" on-close="widget.display.newBookmark = false">
+		<h2><i18n>bookmark.widget.createform.title</i18n></h2>
+		<article class="twelve cell">
+			<div class="row">
+				<label class="one cell"><i18n>bookmark.widget.createform.name</i18n></label>
+				<input type="text" ng-model="widget.bookmark.name" class="eleven cell" />
+			</div>
+			<div class="row">
+				<label class="one cell"><i18n>bookmark.widget.createform.url</i18n></label>
+				<input type="text" ng-model="widget.bookmark.url" class="eleven cell" />
+			</div>
+			<div class="row">
+				<button class="right-magnet" ng-click="widget.bookmark.createBookmark()">
+					<i18n>bookmark.widget.createform.save</i18n> 
+				</button>
+				<button class="right-magnet cancel" ng-click="widget.display.newBookmark = false">
+					<i18n>bookmark.widget.createform.cancel</i18n>
+				</button>
+			</div>
+		</article>
+	</lightbox>
+	
+	<lightbox show="widget.display.manage" on-close="widget.display.manage = false">
+		<h2><i18n>bookmark.widget.manageform.title</i18n></h2>
+		<table class="list-view twelve">
+			<thead>
+				<tr>
+					<th><i18n>bookmark.widget.managetable.name</i18n></th>
+					<th><i18n>bookmark.widget.managetable.url</i18n></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="bookmark in widget.bookmarks">
+					<td>[[bookmark.name]]</td>
+					<td>[[bookmark.url]]</td>
+					<td class="drop-line" ng-click="bookmark.deleteBookmark()"></td>
+				</tr>
+			</tbody>
+		</table>
+		<hr class="row"/>
+<!-- 		<div class="row" ng-if=""> -->
+<!-- 		</div> -->
+	</lightbox>
+</div>
