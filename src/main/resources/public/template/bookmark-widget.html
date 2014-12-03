@@ -9,18 +9,21 @@
 	  font-weight: normal;
 	  margin-bottom: 15px;
 	}
-	.bookmark-widget.widget .bookmark-button {
-	  margin-top: 10px;
-	  margin-bottom: 10px;
-	  margin-left: auto;
-	  margin-right: auto;
+	.bookmark-widget.widget .display-buttons {
+	  box-sizing: border-box;
 	  display: block;
+	  position: relative;
+	  text-align: right;
+	  float: none;
 	}
 	.bookmark-widget.widget .brown-background {
 	  background-color: #786c5c;
 	}
 	.bookmark-widget.widget h1 {
+	  background-color: #a5957b;
 	  color: #fff;
+	  padding: 8px;
+	  text-align: center;
 	}
 	.bookmark-widget.widget ul {
 	  padding: 10px;
@@ -33,6 +36,9 @@
 	.bookmark-widget.widget a {
 	  color: #fff;
 	}
+	.bookmark-widget.widget tbody td {
+	  padding: 5px;
+	}
 	.bookmark-widget.widget tbody tr:hover {
 	  background: #e4e4da;
 	}
@@ -43,11 +49,10 @@
 
 
 <div class="widget bookmark-widget">
-
 	<h1><i18n>bookmark.widget.title</i18n></h1>
 	
 	<ul class="row" ng-if="!widget.bookmarks.isEmpty()">
-		<li ng-repeat="bookmark in widget.bookmarks.all">
+		<li ng-repeat="bookmark in widget.bookmarks.all | orderBy:'name'">
 			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
 		</li>
 	</ul>
@@ -55,11 +60,11 @@
 		<i18n>bookmark.widget.empty</i18n>
 	</span>
 
-	<div class="row" >
-      <i class="show-admin right-magnet bookmark-button" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
+	<div class="row display-buttons">
+      <i class="show-admin" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
        translate-attr="tooltip" tooltip="bookmark.widget.manage.bookmarks"></i>
-       <button class="right-magnet bookmark-button brown-background" ng-click="widget.newBookmark()">
-               <i18n>bookmark.widget.new.bookmark</i18n>
+       <button class="brown-background" ng-click="widget.newBookmark()">
+           <i18n>bookmark.widget.new.bookmark</i18n>
        </button>
 	</div>
 	
