@@ -1,53 +1,3 @@
-<!-- TODO : create css class "bookmark-widget" in springboard-neo -->
-<style>
-    .bookmark-widget.drop-line {
-	  background: url("/assets/themes/neo/img/icons/close-cross.png") no-repeat center;
-    }
-	.bookmark-widget.widget {
-	  width: 100%;
-	  background: #c0b192;
-	  font-weight: normal;
-	  margin-bottom: 15px;
-	}
-	.bookmark-widget.widget .display-buttons {
-	  box-sizing: border-box;
-	  display: block;
-	  position: relative;
-	  text-align: right;
-	  float: none;
-	}
-	.bookmark-widget.widget .brown-background {
-	  background-color: #786c5c;
-	}
-	.bookmark-widget.widget h1 {
-	  background-color: #a5957b;
-	  color: #fff;
-	  padding: 8px;
-	  text-align: center;
-	}
-	.bookmark-widget.widget ul {
-	  padding: 10px;
-	  margin: 0;
-	}
-	.bookmark-widget.widget ul li {
-	  list-style-type: none;
-	  color: #786c5c;
-	}
-	.bookmark-widget.widget a {
-	  color: #fff;
-	}
-	.bookmark-widget.widget tbody td {
-	  padding: 5px;
-	}
-	.bookmark-widget.widget tbody tr:hover {
-	  background: #e4e4da;
-	}
-	.bookmark-widget.widget .selected {
-	  background: #e4e4da;
-	}
-</style>
-
-
 <div class="widget bookmark-widget">
 	<h1><i18n>bookmark.widget.title</i18n></h1>
 	
@@ -63,7 +13,7 @@
 	<div class="row display-buttons">
       <i class="show-admin" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
        translate-attr="tooltip" tooltip="bookmark.widget.manage.bookmarks"></i>
-       <button class="brown-background" ng-click="widget.newBookmark()">
+       <button class="button-background" ng-click="widget.newBookmark()">
            <i18n>bookmark.widget.new.bookmark</i18n>
        </button>
 	</div>
