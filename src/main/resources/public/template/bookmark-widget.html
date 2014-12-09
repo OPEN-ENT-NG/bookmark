@@ -1,5 +1,9 @@
 <div class="widget bookmark-widget">
-	<h1><i18n>bookmark.widget.title</i18n></h1>
+	<h1>
+		<span ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
+			tooltip="bookmark.widget.manage.bookmarks" class="bookmark-config-button"></span>
+		<span ng-click="widget.newBookmark()" tooltip="bookmark.widget.new.bookmark" class="bookmark-add-button"></span>
+	</h1>
 	
 	<ul class="row" ng-if="!widget.bookmarks.isEmpty()">
 		<li ng-repeat="bookmark in widget.bookmarks.all | orderBy:'name'">
@@ -10,14 +14,6 @@
 		<i18n>bookmark.widget.empty</i18n>
 	</span>
 
-	<div class="row display-buttons">
-      <i class="show-admin" ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
-       translate-attr="tooltip" tooltip="bookmark.widget.manage.bookmarks"></i>
-       <button class="button-background" ng-click="widget.newBookmark()">
-           <i18n>bookmark.widget.new.bookmark</i18n>
-       </button>
-	</div>
-	
 	<lightbox show="widget.display.newBookmark" on-close="widget.display.newBookmark = false">
 		<div ng-mousedown="widget.stopPropagation($event)">
 			<h2><i18n>bookmark.widget.createform.title</i18n></h2>
