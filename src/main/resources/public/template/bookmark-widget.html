@@ -19,65 +19,69 @@
 	</div>
 	
 	<lightbox show="widget.display.newBookmark" on-close="widget.display.newBookmark = false">
-		<h2><i18n>bookmark.widget.createform.title</i18n></h2>
-		<article class="twelve cell">
-			<div class="row">
-				<label class="one cell"><i18n>bookmark.widget.createform.name</i18n></label>
-				<input type="text" ng-model="widget.bookmark.name" class="eleven cell" />
-			</div>
-			<div class="row">
-				<label class="one cell"><i18n>bookmark.widget.createform.url</i18n></label>
-				<input type="text" ng-model="widget.bookmark.url" class="eleven cell" />
-			</div>
-			<div class="row">
-				<button class="right-magnet" ng-click="widget.bookmark.createBookmark()">
-					<i18n>bookmark.widget.createform.save</i18n> 
-				</button>
-				<button class="right-magnet cancel" ng-click="widget.display.newBookmark = false">
-					<i18n>bookmark.widget.createform.cancel</i18n>
-				</button>
-			</div>
-		</article>
+		<div ng-mousedown="widget.stopPropagation($event)">
+			<h2><i18n>bookmark.widget.createform.title</i18n></h2>
+			<article class="twelve cell">
+				<div class="row">
+					<label class="one cell"><i18n>bookmark.widget.createform.name</i18n></label>
+					<input type="text" ng-model="widget.bookmark.name" class="eleven cell" />
+				</div>
+				<div class="row">
+					<label class="one cell"><i18n>bookmark.widget.createform.url</i18n></label>
+					<input type="text" ng-model="widget.bookmark.url" class="eleven cell" />
+				</div>
+				<div class="row">
+					<button class="right-magnet" ng-click="widget.bookmark.createBookmark()">
+						<i18n>bookmark.widget.createform.save</i18n> 
+					</button>
+					<button class="right-magnet cancel" ng-click="widget.display.newBookmark = false">
+						<i18n>bookmark.widget.createform.cancel</i18n>
+					</button>
+				</div>
+			</article>
+		</div>
 	</lightbox>
 	
 	<lightbox show="widget.display.manage" on-close="widget.display.manage = false">
-		<h2><i18n>bookmark.widget.manage.title</i18n></h2>
-		<table class="list-view twelve">
-			<thead>
-				<tr>
-					<th><i18n>bookmark.widget.managetable.name</i18n></th>
-					<th><i18n>bookmark.widget.managetable.url</i18n></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="bookmark in widget.bookmarks.all" ng-class="{ selected : widget.editedBookmark && bookmark._id === widget.editedBookmark._id }">
-					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.name]]</td>
-					<td ng-click="widget.editBookmark(bookmark)">[[bookmark.url]]</td>
-					<td class="bookmark-widget drop-line" ng-click="bookmark.deleteBookmark()"></td>
-				</tr>
-			</tbody>
-		</table>
-		<hr class="row"/>
-		
-		<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
-			<h3><i18n>bookmark.widget.edit.bookmark</i18n></h3>
-			<div class="row">
-				<label class="one cell"><i18n>bookmark.widget.editform.name</i18n></label>
-				<input type="text" ng-model="widget.editedBookmark.name" class="eleven cell" />
-			</div>
-			<div class="row">
-				<label class="one cell"><i18n>bookmark.widget.editform.url</i18n></label>
-				<input type="text" ng-model="widget.editedBookmark.url" class="eleven cell" />
-			</div>
-			<div class="row">
-				<button class="right-magnet" ng-click="widget.editedBookmark.updateBookmark()">
-					<i18n>bookmark.widget.editform.save</i18n> 
-				</button>
-				<button class="right-magnet cancel" ng-click="widget.cancelEdit()">
-					<i18n>bookmark.widget.editform.cancel</i18n>
-				</button>
-			</div>
-		</article>
+		<div ng-mousedown="widget.stopPropagation($event)">
+			<h2><i18n>bookmark.widget.manage.title</i18n></h2>
+			<table class="list-view twelve">
+				<thead>
+					<tr>
+						<th><i18n>bookmark.widget.managetable.name</i18n></th>
+						<th><i18n>bookmark.widget.managetable.url</i18n></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="bookmark in widget.bookmarks.all" ng-class="{ selected : widget.editedBookmark && bookmark._id === widget.editedBookmark._id }">
+						<td ng-click="widget.editBookmark(bookmark)">[[bookmark.name]]</td>
+						<td ng-click="widget.editBookmark(bookmark)">[[bookmark.url]]</td>
+						<td class="bookmark-widget drop-line" ng-click="bookmark.deleteBookmark()"></td>
+					</tr>
+				</tbody>
+			</table>
+			<hr class="row"/>
+			
+			<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
+				<h3><i18n>bookmark.widget.edit.bookmark</i18n></h3>
+				<div class="row">
+					<label class="one cell"><i18n>bookmark.widget.editform.name</i18n></label>
+					<input type="text" ng-model="widget.editedBookmark.name" class="eleven cell" />
+				</div>
+				<div class="row">
+					<label class="one cell"><i18n>bookmark.widget.editform.url</i18n></label>
+					<input type="text" ng-model="widget.editedBookmark.url" class="eleven cell" />
+				</div>
+				<div class="row">
+					<button class="right-magnet" ng-click="widget.editedBookmark.updateBookmark()">
+						<i18n>bookmark.widget.editform.save</i18n> 
+					</button>
+					<button class="right-magnet cancel" ng-click="widget.cancelEdit()">
+						<i18n>bookmark.widget.editform.cancel</i18n>
+					</button>
+				</div>
+			</article>
+		</div>
 	</lightbox>
 </div>

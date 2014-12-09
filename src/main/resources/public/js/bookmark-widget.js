@@ -96,6 +96,12 @@ bookmarkWidget.cancelEdit = function() {
 	bookmarkWidget.editedBookmark = new Bookmark();
 };
 
+bookmarkWidget.stopPropagation = function(event) {
+	if(event && event.stopPropagation) {
+		event.stopPropagation();
+	}
+};
+
 var isEmpty = function(string){
 	return (!string || string.trim().length === 0);
 };
