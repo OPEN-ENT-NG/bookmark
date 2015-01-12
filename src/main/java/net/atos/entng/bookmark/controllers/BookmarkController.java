@@ -101,7 +101,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 
 	@Put("/:id")
 	@ApiDoc("Update a bookmark")
-	@SecuredAction(value = "bookmark.update", type = ActionType.RESOURCE)
+	@SecuredAction(value = "", type = ActionType.RESOURCE)
 	public void updateBookmark(final HttpServerRequest request) {
 		UserUtils.getUserInfos(eb, request, new Handler<UserInfos>() {
 			@Override
@@ -131,7 +131,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 
 	@Delete("/:id")
 	@ApiDoc("Delete a bookmark")
-	@SecuredAction(value = "bookmark.delete", type = ActionType.RESOURCE)
+	@SecuredAction(value = "", type = ActionType.RESOURCE)
 	public void deleteBookmark(final HttpServerRequest request) {
 		UserUtils.getUserInfos(eb, request, new Handler<UserInfos>() {
 			@Override
