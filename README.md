@@ -1,12 +1,6 @@
-## Construction
+# À propos du widget Bookmark
 
-<pre>
-		gradle clean copyMod
-</pre>
+* licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt)
+* financeur : Région Picardie, Conseil général  91, Région Poitou Charente
+* description : Widget d'enregistrement de signets
 
-
-## Configuration du module bookmark dans le projet ong
-TODO
-
-## Documentation
-TODO
