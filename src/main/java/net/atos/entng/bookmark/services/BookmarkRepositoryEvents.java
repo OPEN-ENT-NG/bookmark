@@ -24,12 +24,12 @@ public class BookmarkRepositoryEvents implements RepositoryEvents {
 	@Override
 	public void exportResources(String exportId, String userId,
 			JsonArray groups, String exportPath, String locale) {
-		throw new UnsupportedOperationException();
+		log.warn("Method exportResources is not implemented in BookmarkRepositoryEvents");
 	}
 
 	@Override
 	public void deleteGroups(JsonArray groups) {
-		throw new UnsupportedOperationException();
+		log.warn("Method deleteGroups is not implemented in BookmarkRepositoryEvents");
 	}
 
 	@Override
