@@ -23,7 +23,7 @@ public class BookmarkRepositoryEvents implements RepositoryEvents {
 
 	@Override
 	public void exportResources(String exportId, String userId,
-			JsonArray groups, String exportPath, String locale) {
+			JsonArray groups, String exportPath, String locale, String host, final Handler<Boolean> handler) {
 		log.warn("Method exportResources is not implemented in BookmarkRepositoryEvents");
 	}
 
