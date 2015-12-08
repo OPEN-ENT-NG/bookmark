@@ -1,4 +1,4 @@
-var bookmarkWidget = model.widgets.findWidget('bookmark');
+var bookmarkWidget = model.widgets.findWidget('bookmark-widget');
 
 // Model
 function Bookmark(){}
@@ -22,7 +22,7 @@ Bookmark.prototype.createBookmark = function() {
 		notify.error('bookmark.widget.form.url.is.empty');
 		return;
 	}
-	
+
 	http().postJson('/bookmark', this).done(function(response){
 		this.updateData(response);
 		model.bookmarks.push(this);
@@ -43,7 +43,7 @@ Bookmark.prototype.updateBookmark = function() {
 		notify.error('bookmark.widget.form.url.is.empty');
 		return;
 	}
-	
+
 	var that = this;
 	http().putJson('/bookmark/' + this._id, this).done(function(){
 		var aBookmark = model.bookmarks.find(function(pBookmark) {
@@ -85,7 +85,7 @@ bookmarkWidget.manageBookmarks = function() {
 	if(!bookmarkWidget.display) {
 		bookmarkWidget.display = {};
 	}
-	bookmarkWidget.display.manage = true;	
+	bookmarkWidget.display.manage = true;
 };
 
 bookmarkWidget.editBookmark = function(bookmark) {

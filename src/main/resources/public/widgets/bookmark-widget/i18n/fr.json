@@ -1,5 +1,5 @@
 {
-    "bookmark": "signets",
+    "bookmark-widget": "signets",
     "bookmark.widget.bad.request.invalid.url": "L'addresse saisie est invalide.",
     "bookmark.widget.createform.cancel": "Annuler",
     "bookmark.widget.createform.name": "Nom",
