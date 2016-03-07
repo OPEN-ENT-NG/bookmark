@@ -11,9 +11,9 @@
 			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
 		</li>
 	</ul>
-	<span ng-if="widget.bookmarks.isEmpty()">
+	<div class="message" ng-if="widget.bookmarks.isEmpty()">
 		<i18n>bookmark.widget.empty</i18n>
-	</span>
+	</div>
 
 	<lightbox show="widget.display.newBookmark" on-close="widget.display.newBookmark = false">
 		<div ng-mousedown="widget.stopPropagation($event)">
