@@ -1,11 +1,11 @@
 <div class="widget bookmark-widget">
 	<h1>
-		<span ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()" 
+		<span ng-if="!widget.bookmarks.isEmpty()" ng-click="widget.manageBookmarks()"
 			tooltip="bookmark.widget.manage.bookmarks" class="bookmark-config-button"></span>
 		<i18n>bookmark.widget.title</i18n>
 		<span ng-click="widget.newBookmark()" tooltip="bookmark.widget.new.bookmark" class="bookmark-add-button"></span>
 	</h1>
-	
+
 	<ul class="row" ng-if="!widget.bookmarks.isEmpty()">
 		<li ng-repeat="bookmark in widget.bookmarks.all | orderBy:'name'">
 			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
@@ -20,16 +20,16 @@
 			<h2><i18n>bookmark.widget.createform.title</i18n></h2>
 			<article class="twelve cell">
 				<div class="row">
-					<label class="one cell"><i18n>bookmark.widget.createform.name</i18n></label>
-					<input type="text" ng-model="widget.bookmark.name" class="eleven cell" />
+					<label class="two cell"><i18n>bookmark.widget.createform.name</i18n></label>
+					<input type="text" ng-model="widget.bookmark.name" class="ten cell" />
 				</div>
 				<div class="row">
-					<label class="one cell"><i18n>bookmark.widget.createform.url</i18n></label>
-					<input type="text" ng-model="widget.bookmark.url" class="eleven cell" />
+					<label class="two cell"><i18n>bookmark.widget.createform.url</i18n></label>
+					<input type="text" ng-model="widget.bookmark.url" class="ten cell" />
 				</div>
 				<div class="row">
 					<button class="right-magnet" ng-click="widget.bookmark.createBookmark()">
-						<i18n>bookmark.widget.createform.save</i18n> 
+						<i18n>bookmark.widget.createform.save</i18n>
 					</button>
 					<button class="right-magnet cancel" ng-click="widget.display.newBookmark = false">
 						<i18n>bookmark.widget.createform.cancel</i18n>
@@ -38,7 +38,7 @@
 			</article>
 		</div>
 	</lightbox>
-	
+
 	<lightbox show="widget.display.manage" on-close="widget.display.manage = false">
 		<div ng-mousedown="widget.stopPropagation($event)">
 			<h2><i18n>bookmark.widget.manage.title</i18n></h2>
@@ -59,7 +59,7 @@
 				</tbody>
 			</table>
 			<hr class="row"/>
-			
+
 			<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
 				<h3><i18n>bookmark.widget.edit.bookmark</i18n></h3>
 				<div class="row">
@@ -72,7 +72,7 @@
 				</div>
 				<div class="row">
 					<button class="right-magnet" ng-click="widget.editedBookmark.updateBookmark()">
-						<i18n>bookmark.widget.editform.save</i18n> 
+						<i18n>bookmark.widget.editform.save</i18n>
 					</button>
 					<button class="right-magnet cancel" ng-click="widget.cancelEdit()">
 						<i18n>bookmark.widget.editform.cancel</i18n>
