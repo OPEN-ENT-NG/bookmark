@@ -91,6 +91,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 							if(!isValidURL(url)) {
 								String errorMessage = i18n.translate(
 										"bookmark.widget.bad.request.invalid.url",
+										getHost(request),
 										I18n.acceptLanguage(request));
 								badRequest(request, errorMessage);
 								return;
@@ -135,6 +136,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 							if(!isValidURL(url)) {
 								String errorMessage = i18n.translate(
 										"bookmark.widget.bad.request.invalid.url",
+										getHost(request),
 										I18n.acceptLanguage(request));
 								badRequest(request, errorMessage);
 								return;
