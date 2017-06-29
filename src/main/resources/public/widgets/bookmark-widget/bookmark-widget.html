@@ -7,11 +7,11 @@
 	</h1>
 
 	<ul class="row" ng-if="!widget.bookmarks.isEmpty()">
-		<li ng-repeat="bookmark in widget.bookmarks.all | orderBy:'name'">
+		<li ng-repeat="bookmark in widget.bookmarks | orderBy:'name'">
 			<a href="[[bookmark.url]]" target="_blank">[[bookmark.name]]</a>
 		</li>
 	</ul>
-	<div class="message" ng-if="widget.bookmarks.isEmpty()">
+	<div class="message" ng-if="widget.bookmarks.length === 0">
 		<i18n>bookmark.widget.empty</i18n>
 	</div>
 
@@ -51,7 +51,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="bookmark in widget.bookmarks.all" ng-class="{ selected : widget.editedBookmark && bookmark._id === widget.editedBookmark._id }">
+					<tr ng-repeat="bookmark in widget.bookmarks" ng-class="{ selected : widget.editedBookmark && bookmark._id === widget.editedBookmark._id }">
 						<td ng-click="widget.editBookmark(bookmark)">[[bookmark.name]]</td>
 						<td ng-click="widget.editBookmark(bookmark)">[[bookmark.url]]</td>
 						<td class="bookmark-widget drop-line" ng-click="bookmark.deleteBookmark()"></td>

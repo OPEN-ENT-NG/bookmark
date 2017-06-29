@@ -1,12 +1,16 @@
 var bookmarkWidget = model.widgets.findWidget('bookmark-widget');
 
 // Model
-function Bookmark(){}
+function Bookmark(data){
+	for(var prop in data){
+		this[prop] = data[prop];
+	}
+}
 
 var getBookmarks = function() {
 	http().get('/bookmark').done(function(response){
 		if(response && response.bookmarks) {
-			bookmarkWidget.bookmarks = response.bookmarks;
+			bookmarkWidget.bookmarks = _.map(response.bookmarks, function(b){ return new Bookmark(b) });
 		}
 		model.widgets.apply('bookmarks');
 	});
@@ -62,7 +66,9 @@ Bookmark.prototype.updateBookmark = function() {
 
 Bookmark.prototype.deleteBookmark = function() {
 	http().delete('/bookmark/' + this._id).done(function(){
-		bookmarkWidget.bookmarks.remove(this);
+		var index = bookmarkWidget.bookmarks.indexOf(this);
+		bookmarkWidget.bookmarks.splice(index, 1);
+		model.widgets.apply('bookmarks');
 	}.bind(this));
 };
 
