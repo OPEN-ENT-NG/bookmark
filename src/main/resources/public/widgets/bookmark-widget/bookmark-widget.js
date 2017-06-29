@@ -6,9 +6,8 @@ function Bookmark(){}
 var getBookmarks = function() {
 	http().get('/bookmark').done(function(response){
 		if(response && response.bookmarks) {
-			model.bookmarks.load(response.bookmarks);
+			bookmarkWidget.bookmarks = response.bookmarks;
 		}
-		bookmarkWidget.bookmarks = model.bookmarks;
 		model.widgets.apply('bookmarks');
 	});
 };
@@ -24,8 +23,10 @@ Bookmark.prototype.createBookmark = function() {
 	}
 
 	http().postJson('/bookmark', this).done(function(response){
-		this.updateData(response);
-		model.bookmarks.push(this);
+		for(var prop in response){
+			this[prop] = response[prop];
+		}
+		bookmarkWidget.bookmarks.push(this);
 		bookmarkWidget.display.newBookmark = false;
 		model.widgets.apply('bookmarks');
 	}.bind(this))
@@ -46,10 +47,12 @@ Bookmark.prototype.updateBookmark = function() {
 
 	var that = this;
 	http().putJson('/bookmark/' + this._id, this).done(function(){
-		var aBookmark = model.bookmarks.find(function(pBookmark) {
+		var aBookmark = bookmarkWidget.bookmarks.find(function(pBookmark) {
 			return pBookmark._id === that._id;
 		});
-		aBookmark.updateData(that);
+		for(var prop in that){
+			aBookmark[prop] = that[prop];
+		}
 		model.widgets.apply('bookmarks');
 		bookmarkWidget.editedBookmark = new Bookmark();
 	}).e400(function(response){
@@ -59,7 +62,7 @@ Bookmark.prototype.updateBookmark = function() {
 
 Bookmark.prototype.deleteBookmark = function() {
 	http().delete('/bookmark/' + this._id).done(function(){
-		model.bookmarks.remove(this);
+		bookmarkWidget.bookmarks.remove(this);
 	}.bind(this));
 };
 
@@ -106,8 +109,4 @@ var isEmpty = function(string){
 	return (!string || string.trim().length === 0);
 };
 
-
-// Init
-model.makeModel(Bookmark);
-model.collection(Bookmark);
 getBookmarks();
