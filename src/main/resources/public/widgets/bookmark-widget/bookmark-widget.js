@@ -11,6 +11,8 @@ var getBookmarks = function() {
 	http().get('/bookmark').done(function(response){
 		if(response && response.bookmarks) {
 			bookmarkWidget.bookmarks = _.map(response.bookmarks, function(b){ return new Bookmark(b) });
+		}else{
+            bookmarkWidget.bookmarks = [];
 		}
 		model.widgets.apply('bookmarks');
 	});
