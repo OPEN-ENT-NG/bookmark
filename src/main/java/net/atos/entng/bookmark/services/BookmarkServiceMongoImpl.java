@@ -25,8 +25,8 @@ import static org.entcore.common.mongodb.MongoDbResult.validResultHandler;
 import org.bson.types.ObjectId;
 import org.entcore.common.service.impl.MongoDbCrudService;
 import org.entcore.common.user.UserInfos;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
@@ -56,9 +56,9 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 
 		// Create document with array "bookmarks", or add bookmark to the array if it already exists
 		JsonObject newBookmark = new JsonObject();
-		newBookmark.putString("_id", newBookmarkId)
-			.putString("name", data.getString("name"))
-			.putString("url", data.getString("url"));
+		newBookmark.put("_id", newBookmarkId)
+			.put("name", data.getString("name"))
+			.put("url", data.getString("url"));
 
 		MongoUpdateBuilder modifier = new MongoUpdateBuilder();
 		modifier.push("bookmarks", newBookmark);
@@ -67,13 +67,13 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 		modifier.set("modified", now);
 
 		JsonObject owner = new JsonObject()
-			.putString("userId", user.getUserId())
-			.putString("displayName", user.getUsername());
+			.put("userId", user.getUserId())
+			.put("displayName", user.getUsername());
 
 		JsonObject update = modifier.build();
-		update.putObject("$setOnInsert",
-				new JsonObject().putObject("created", now)
-					.putObject("owner", owner));
+		update.put("$setOnInsert",
+				new JsonObject().put("created", now)
+					.put("owner", owner));
 
 		mongo.update(collection, MongoQueryBuilder.build(query),
 				update, true, false,
@@ -116,7 +116,7 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 		MongoUpdateBuilder modifier = new MongoUpdateBuilder();
 		JsonObject now = MongoDb.now();
 
-		modifier.pull("bookmarks", new JsonObject().putString("_id", bookmarkId))
+		modifier.pull("bookmarks", new JsonObject().put("_id", bookmarkId))
 				.set("modified", now);
 
 		mongo.update(collection, MongoQueryBuilder.build(query),

@@ -32,7 +32,7 @@ public class Bookmark extends BaseServer {
 	public final static String BOOKMARK_COLLECTION = "bookmark";
 
 	@Override
-	public void start() {
+	public void start() throws Exception {
 		super.start();
 
 		// Set RepositoryEvents implementation used to process events published for transition

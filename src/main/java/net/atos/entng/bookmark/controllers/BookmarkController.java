@@ -31,9 +31,9 @@ import net.atos.entng.bookmark.services.BookmarkServiceMongoImpl;
 import org.entcore.common.mongodb.MongoDbControllerHelper;
 import org.entcore.common.user.UserInfos;
 import org.entcore.common.user.UserUtils;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.JsonObject;
 
 import fr.wseduc.rs.ApiDoc;
 import fr.wseduc.rs.Delete;
@@ -103,10 +103,10 @@ public class BookmarkController extends MongoDbControllerHelper {
 									if (event.isRight()) {
 										// return id of created bookmark
 										JsonObject result = new JsonObject();
-										result.putString("_id", newBookmarkId);
+										result.put("_id", newBookmarkId);
 										renderJson(request, result);
 									} else {
-										JsonObject error = new JsonObject().putString(
+										JsonObject error = new JsonObject().put(
 												"error", event.left().getValue());
 										renderError(request, error);
 									}
