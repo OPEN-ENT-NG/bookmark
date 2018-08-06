@@ -89,6 +89,7 @@ bookmarkWidget.newBookmark = function() {
 		bookmarkWidget.display = {};
 	}
 	bookmarkWidget.bookmark = new Bookmark( { url : "http://" } );
+	bookmarkWidget.display.manage = false;
 	bookmarkWidget.display.newBookmark = true;
 };
 

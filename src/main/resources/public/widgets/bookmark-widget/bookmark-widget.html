@@ -42,7 +42,7 @@
 	<lightbox show="widget.display.manage" on-close="widget.display.manage = false">
 		<div ng-mousedown="widget.stopPropagation($event)">
 			<h2><i18n>bookmark.widget.manage.title</i18n></h2>
-			<table class="list-view twelve">
+			<table class="list-view twelve" ng-if="widget.bookmarks.length !== 0">
 				<thead>
 					<tr>
 						<th><i18n>bookmark.widget.managetable.name</i18n></th>
@@ -58,6 +58,10 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="row" ng-if="widget.bookmarks.length === 0">
+				<i18n>bookmark.widget.empty</i18n>
+				<button class="bookmark right-magnet" ng-click="widget.newBookmark()"><i18n>bookmark.widget.new.bookmark</i18n></button>
+			</div>
 			<hr class="row"/>
 
 			<article class="twelve cell" ng-if="widget.editedBookmark && widget.editedBookmark._id">
