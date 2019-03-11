@@ -6,6 +6,7 @@
     "app-name" : "Signets",
     "app-address" : "/bookmark",
     "app-icon" : "bookmark-large",
+    "app-type" : "WIDGET",
     "host": "${host}",
     "ssl" : $ssl,
     "auto-redeploy": false,
