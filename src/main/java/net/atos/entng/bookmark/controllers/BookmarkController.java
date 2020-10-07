@@ -25,9 +25,13 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import net.atos.entng.bookmark.Bookmark;
 import net.atos.entng.bookmark.services.BookmarkService;
 import net.atos.entng.bookmark.services.BookmarkServiceMongoImpl;
 
+import org.entcore.common.events.EventHelper;
+import org.entcore.common.events.EventStore;
+import org.entcore.common.events.EventStoreFactory;
 import org.entcore.common.mongodb.MongoDbControllerHelper;
 import org.entcore.common.user.UserInfos;
 import org.entcore.common.user.UserUtils;
@@ -47,13 +51,16 @@ import fr.wseduc.webutils.I18n;
 import fr.wseduc.webutils.request.RequestUtils;
 
 public class BookmarkController extends MongoDbControllerHelper {
-
+	static final String RESOURCE_NAME = "bookmark";
 	private final BookmarkService bookmarkService;
 	private static final I18n i18n = I18n.getInstance();
+	private final EventHelper eventHelper;
 
 	public BookmarkController(String collection) {
 		super(collection);
 		bookmarkService = new BookmarkServiceMongoImpl(collection);
+		final EventStore eventStore = EventStoreFactory.getFactory().getEventStore(Bookmark.class.getSimpleName());
+		this.eventHelper = new EventHelper(eventStore);
 	}
 
 	/* NB : actionType "AUTHENTICATED" is used instead of "WORKFLOW", so that
@@ -105,6 +112,7 @@ public class BookmarkController extends MongoDbControllerHelper {
 										JsonObject result = new JsonObject();
 										result.put("_id", newBookmarkId);
 										renderJson(request, result);
+										eventHelper.onCreateResource(request, RESOURCE_NAME);
 									} else {
 										JsonObject error = new JsonObject().put(
 												"error", event.left().getValue());
