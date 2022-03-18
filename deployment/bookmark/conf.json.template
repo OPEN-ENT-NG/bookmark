@@ -1,5 +1,5 @@
 {
-  "name": "net.atos~bookmark~1.12.1",
+  "name": "net.atos~bookmark~1.12.2",
   "config": {
     "main" : "net.atos.entng.bookmark.Bookmark",
     "port" : 8032,
