@@ -22,3 +22,5 @@ mods
 */mods
 data
 gradle*
+.env
+dependency-reduced-pom.xml

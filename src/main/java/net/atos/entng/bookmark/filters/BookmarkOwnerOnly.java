@@ -20,17 +20,19 @@
 package net.atos.entng.bookmark.filters;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.QueryBuilder;
 
 import fr.wseduc.mongodb.MongoQueryBuilder;
 import fr.wseduc.webutils.http.Binding;
 
+import org.bson.conversions.Bson;
 import org.entcore.common.http.filter.MongoAppFilter;
 import org.entcore.common.http.filter.ResourcesProvider;
 import org.entcore.common.mongodb.MongoDbConf;
 import org.entcore.common.user.UserInfos;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
+import static com.mongodb.client.model.Filters.*;
+
 
 public class BookmarkOwnerOnly implements ResourcesProvider  {
 
@@ -42,8 +44,8 @@ public class BookmarkOwnerOnly implements ResourcesProvider  {
 		String id = request.params().get("id");
 		if (id != null && !id.trim().isEmpty()) {
 			BasicDBObject idDBO = new BasicDBObject("_id", id);
-			QueryBuilder query = QueryBuilder.start("owner.userId").is(user.getUserId())
-					.put("bookmarks").elemMatch(idDBO);
+			Bson query = and(eq("owner.userId", user.getUserId()),
+					elemMatch("bookmarks", idDBO));
 			MongoAppFilter.executeCountQuery(request, conf.getCollection(), MongoQueryBuilder.build(query), 1, handler);
 		} else {
 			handler.handle(false);

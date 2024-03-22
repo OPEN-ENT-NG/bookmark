@@ -1,5 +1,5 @@
 {
-  "name": "net.atos~bookmark~1.12-SNAPSHOT",
+  "name": "net.atos~bookmark~2.0-b2school-SNAPSHOT",
   "config": {
     "main" : "net.atos.entng.bookmark.Bookmark",
     "port" : 8032,
