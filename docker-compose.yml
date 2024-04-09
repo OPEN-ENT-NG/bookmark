@@ -9,7 +9,7 @@ services:
       - ~/.gradle:/home/gradle/.gradle
 
   node:
-    image: opendigitaleducation/node:10
+    image: opendigitaleducation/node
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
