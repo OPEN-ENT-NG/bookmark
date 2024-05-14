@@ -22,6 +22,7 @@ package net.atos.entng.bookmark.services;
 import static org.entcore.common.mongodb.MongoDbResult.validActionResultHandler;
 import static org.entcore.common.mongodb.MongoDbResult.validResultHandler;
 
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.entcore.common.service.impl.MongoDbCrudService;
 import org.entcore.common.user.UserInfos;
@@ -29,12 +30,13 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.QueryBuilder;
 
 import fr.wseduc.mongodb.MongoDb;
 import fr.wseduc.mongodb.MongoQueryBuilder;
 import fr.wseduc.mongodb.MongoUpdateBuilder;
 import fr.wseduc.webutils.Either;
+
+import static com.mongodb.client.model.Filters.*;
 
 public class BookmarkServiceMongoImpl extends MongoDbCrudService implements BookmarkService {
 
@@ -52,7 +54,7 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 			Handler<Either<String, JsonObject>> handler) {
 
 		// Only one document per user, containing all user's bookmarks
-		QueryBuilder query = QueryBuilder.start("owner.userId").is(user.getUserId());
+		Bson query = eq("owner.userId", user.getUserId());
 
 		// Create document with array "bookmarks", or add bookmark to the array if it already exists
 		JsonObject newBookmark = new JsonObject();
@@ -87,8 +89,8 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 
 		// Query
 		BasicDBObject idDBO = new BasicDBObject("_id", bookmarkId);
-		QueryBuilder query = QueryBuilder.start("owner.userId").is(user.getUserId())
-				.put("bookmarks").elemMatch(idDBO);
+		Bson query = and(eq("owner.userId", user.getUserId()),
+				elemMatch("bookmarks", idDBO));
 
 		// Update
 		MongoUpdateBuilder modifier = new MongoUpdateBuilder();
@@ -109,8 +111,8 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 
 		// Query
 		BasicDBObject idDBO = new BasicDBObject("_id", bookmarkId);
-		QueryBuilder query = QueryBuilder.start("owner.userId").is(user.getUserId())
-				.put("bookmarks").elemMatch(idDBO);
+		Bson query = and(eq("owner.userId", user.getUserId()),
+				elemMatch("bookmarks", idDBO));
 
 		// Update
 		MongoUpdateBuilder modifier = new MongoUpdateBuilder();
@@ -126,7 +128,7 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 
 	@Override
 	public void getBookmarks(UserInfos user, Handler<Either<String, JsonObject>> handler) {
-		QueryBuilder query = QueryBuilder.start("owner.userId").is(user.getUserId());
+		Bson query = eq("owner.userId", user.getUserId());
 
 		mongo.findOne(collection, MongoQueryBuilder.build(query),
 				validResultHandler(handler));
