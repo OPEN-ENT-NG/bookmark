@@ -20,6 +20,7 @@
 package net.atos.entng.bookmark;
 
 
+import io.vertx.core.Future;
 import net.atos.entng.bookmark.controllers.BookmarkController;
 import net.atos.entng.bookmark.filters.BookmarkOwnerOnly;
 import net.atos.entng.bookmark.services.BookmarkRepositoryEvents;
@@ -35,15 +36,18 @@ public class Bookmark extends BaseServer {
 
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
-		super.start(startPromise);
+		final Promise<Void> promise = Promise.promise();
+		super.start(promise);
+		promise.future().andThen(init -> initBookmark()).onComplete(startPromise);
+	}
 
+	private void initBookmark() {
 		// Set RepositoryEvents implementation used to process events published for transition
 		setRepositoryEvents(new BookmarkRepositoryEvents());
 
 		addController(new BookmarkController(BOOKMARK_COLLECTION));
 		MongoDbConf.getInstance().setCollection(BOOKMARK_COLLECTION);
 		setDefaultResourceFilter(new BookmarkOwnerOnly());
-		startPromise.tryComplete();
 	}
 
 }

@@ -22,6 +22,7 @@ package net.atos.entng.bookmark.services;
 import static net.atos.entng.bookmark.Bookmark.BOOKMARK_COLLECTION;
 
 import org.entcore.common.mongodb.MongoDbResult;
+import org.entcore.common.user.ExportResourceResult;
 import org.entcore.common.user.RepositoryEvents;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
@@ -43,7 +44,7 @@ public class BookmarkRepositoryEvents implements RepositoryEvents {
 
 	@Override
 	public void exportResources(JsonArray resourcesIds, boolean exportDocuments, boolean exportSharedResources, String exportId, String userId,
-			JsonArray groups, String exportPath, String locale, String host, final Handler<Boolean> handler) {
+			JsonArray groups, String exportPath, String locale, String host, final Handler<ExportResourceResult> handler) {
 		log.warn("Method exportResources is not implemented in BookmarkRepositoryEvents");
 	}
 
