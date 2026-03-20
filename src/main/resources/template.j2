@@ -2,6 +2,10 @@
   "name": "net.atos~bookmark",
   "config": {
     "main": "net.atos.entng.bookmark.Bookmark",
+    "probes": [
+      "org.entcore.common.http.health.Neo4jProbe",
+      "org.entcore.common.http.health.MongoProbe"
+    ],
     "port": 8032,
     "csrf-token": {{ csrfToken | default('true') }},
     "app-name": "Signets",
