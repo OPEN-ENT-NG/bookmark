@@ -27,7 +27,7 @@
     <properties>
     <mongodb-helper.version>3.1-develop-b2school-SNAPSHOT</mongodb-helper.version>
     <postgres-driver.version>45.2.20</postgres-driver.version>
-    <entCoreLibsVersion>6.15-SNAPSHOT</entCoreLibsVersion>
+    <entCoreLibsVersion>6.15-develop-b2school-SNAPSHOT</entCoreLibsVersion>
     <entCoreVersion>6.15-develop-b2school-SNAPSHOT</entCoreVersion>
     <modMongoVersion>4.2-SNAPSHOT</modMongoVersion>
     <modJsonSchemaValidatorVersion>2.2-SNAPSHOT</modJsonSchemaValidatorVersion>
