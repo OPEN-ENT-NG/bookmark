@@ -27,6 +27,7 @@ import org.bson.types.ObjectId;
 import org.entcore.common.service.impl.MongoDbCrudService;
 import org.entcore.common.user.UserInfos;
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import com.mongodb.BasicDBObject;
@@ -81,6 +82,68 @@ public class BookmarkServiceMongoImpl extends MongoDbCrudService implements Book
 				update, true, false,
 				validActionResultHandler(handler));
 
+	}
+
+	@Override
+	public void createBookmarkWithLimit(UserInfos user, String newBookmarkId, JsonObject data,
+			Handler<Either<String, JsonObject>> handler) {
+
+		// Only one document per user, containing all user's bookmarks
+		Bson query = eq("owner.userId", user.getUserId());
+
+		JsonObject now = MongoDb.now();
+		JsonObject owner = new JsonObject()
+			.put("userId", user.getUserId())
+			.put("displayName", user.getUsername());
+
+		// Create the user's document if needed, so that adding the bookmark never needs an upsert
+		JsonObject create = new JsonObject().put("$setOnInsert",
+				new JsonObject().put("created", now)
+					.put("owner", owner)
+					.put("bookmarks", new JsonArray()));
+
+		mongo.update(collection, MongoQueryBuilder.build(query),
+				create, true, false,
+				validActionResultHandler(event -> {
+					if (event.isLeft()) {
+						handler.handle(event);
+						return;
+					}
+					pushBookmark(user, newBookmarkId, data, now, handler);
+				}));
+	}
+
+	/*
+	 * Add the bookmark to the user's document, unless the limit is already reached.
+	 * The limit is part of the update query so that the check and the insertion are a single
+	 * atomic operation : "bookmarks.<MAX-1>" exists as soon as the array holds MAX elements,
+	 * hence concurrent creations cannot exceed the limit.
+	 */
+	private void pushBookmark(UserInfos user, String newBookmarkId, JsonObject data, JsonObject now,
+			Handler<Either<String, JsonObject>> handler) {
+
+		Bson query = and(eq("owner.userId", user.getUserId()),
+				exists("bookmarks." + (MAX_BOOKMARKS_PER_USER - 1), false));
+
+		JsonObject newBookmark = new JsonObject();
+		newBookmark.put("_id", newBookmarkId)
+			.put("name", data.getString("name"))
+			.put("url", data.getString("url"));
+
+		MongoUpdateBuilder modifier = new MongoUpdateBuilder();
+		modifier.push("bookmarks", newBookmark)
+				.set("modified", now);
+
+		mongo.update(collection, MongoQueryBuilder.build(query),
+				modifier.build(), false, false,
+				validActionResultHandler(event -> {
+					if (event.isRight() && event.right().getValue().getInteger("number", 0) == 0) {
+						// No document updated : the user already reached the limit
+						handler.handle(new Either.Left<>(LIMIT_REACHED_ERROR));
+						return;
+					}
+					handler.handle(event);
+				}));
 	}
 
 	@Override
