@@ -52,6 +52,7 @@ import fr.wseduc.webutils.request.RequestUtils;
 
 public class BookmarkController extends MongoDbControllerHelper {
 	static final String RESOURCE_NAME = "bookmark";
+	static final int MAX_NAME_LENGTH = 80;
 	private final BookmarkService bookmarkService;
 	private static final I18n i18n = I18n.getInstance();
 	private final EventHelper eventHelper;
@@ -171,6 +172,124 @@ public class BookmarkController extends MongoDbControllerHelper {
 				}
 			}
 		});
+	}
+
+	/* API v2 : same routes as the legacy API under a versioned prefix and a standard resource
+	 * name, plus the limit on the number of bookmarks per user and on the name length.
+	 * Both APIs are served at the same time, so that the legacy widget keeps working
+	 * unchanged while the new one uses the versioned routes.
+	 * Listing and deletion are unchanged by the limits, hence they delegate to the legacy handlers.
+	 */
+
+	@Get("/api/v2/bookmarks")
+	@ApiDoc("Get user's bookmarks")
+	@SecuredAction(value = "bookmark.list", type = ActionType.AUTHENTICATED)
+	public void listBookmarksV2(final HttpServerRequest request) {
+		listBookmarks(request);
+	}
+
+	@Post("/api/v2/bookmarks")
+	@ApiDoc("Add a bookmark, up to MAX_BOOKMARKS_PER_USER bookmarks")
+	@SecuredAction(value = "bookmark.create", type = ActionType.AUTHENTICATED)
+	public void createBookmarkV2(final HttpServerRequest request) {
+		UserUtils.getUserInfos(eb, request, new Handler<UserInfos>() {
+			@Override
+			public void handle(final UserInfos user) {
+				if (user != null) {
+					RequestUtils.bodyToJson(request, pathPrefix + "createOrUpdateBookmark", new Handler<JsonObject>() {
+						@Override
+						public void handle(JsonObject data) {
+							String validationError = validateBookmark(request, data);
+							if (validationError != null) {
+								badRequest(request, validationError);
+								return;
+							}
+
+							final String newBookmarkId = bookmarkService.newObjectId();
+
+							bookmarkService.createBookmarkWithLimit(user, newBookmarkId, data, new Handler<Either<String, JsonObject>>() {
+								@Override
+								public void handle(Either<String, JsonObject> event) {
+									if (event.isRight()) {
+										// return id of created bookmark
+										JsonObject result = new JsonObject();
+										result.put("_id", newBookmarkId);
+										renderJson(request, result);
+										eventHelper.onCreateResource(request, RESOURCE_NAME);
+									} else if (BookmarkService.LIMIT_REACHED_ERROR.equals(event.left().getValue())) {
+										String errorMessage = i18n.translate(
+												"bookmark.widget.bad.request.limit.reached",
+												getHost(request),
+												I18n.acceptLanguage(request),
+												String.valueOf(BookmarkService.MAX_BOOKMARKS_PER_USER));
+										badRequest(request, errorMessage);
+									} else {
+										JsonObject error = new JsonObject().put(
+												"error", event.left().getValue());
+										renderError(request, error);
+									}
+								}
+							});
+						}
+					});
+				}
+			}
+		});
+	}
+
+	@Put("/api/v2/bookmarks/:id")
+	@ApiDoc("Update a bookmark")
+	@SecuredAction(value = "", type = ActionType.RESOURCE)
+	public void updateBookmarkV2(final HttpServerRequest request) {
+		UserUtils.getUserInfos(eb, request, new Handler<UserInfos>() {
+			@Override
+			public void handle(final UserInfos user) {
+				if (user != null) {
+					final String id = request.params().get("id");
+
+					RequestUtils.bodyToJson(request, pathPrefix + "createOrUpdateBookmark", new Handler<JsonObject>() {
+						@Override
+						public void handle(JsonObject data) {
+							String validationError = validateBookmark(request, data);
+							if (validationError != null) {
+								badRequest(request, validationError);
+								return;
+							}
+
+							bookmarkService.updateBookmark(user, id, data, defaultResponseHandler(request));
+						}
+					});
+				}
+			}
+		});
+	}
+
+	@Delete("/api/v2/bookmarks/:id")
+	@ApiDoc("Delete a bookmark")
+	@SecuredAction(value = "", type = ActionType.RESOURCE)
+	public void deleteBookmarkV2(final HttpServerRequest request) {
+		deleteBookmark(request);
+	}
+
+	/**
+	 * Checks the payload of the v2 API.
+	 * @return the error message to send back, or null when the payload is valid
+	 */
+	private String validateBookmark(HttpServerRequest request, JsonObject data) {
+		if (!isValidURL(data.getString("url"))) {
+			return i18n.translate(
+					"bookmark.widget.bad.request.invalid.url",
+					getHost(request),
+					I18n.acceptLanguage(request));
+		}
+		if (data.getString("name").length() > MAX_NAME_LENGTH) {
+			return i18n.translate(
+					"bookmark.widget.bad.request.name.too.long",
+					getHost(request),
+					I18n.acceptLanguage(request),
+					String.valueOf(MAX_NAME_LENGTH));
+		}
+		return null;
 	}
 
 	private static boolean isValidURL(String url) {
