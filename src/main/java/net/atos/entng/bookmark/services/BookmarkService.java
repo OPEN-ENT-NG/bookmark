@@ -28,9 +28,22 @@ import fr.wseduc.webutils.Either;
 
 public interface BookmarkService extends CrudService {
 
+	/** Maximum number of bookmarks a user is allowed to save through the v2 API. */
+	int MAX_BOOKMARKS_PER_USER = 10;
+
+	/** Error returned by createBookmarkWithLimit when the user already reached MAX_BOOKMARKS_PER_USER bookmarks. */
+	String LIMIT_REACHED_ERROR = "bookmark.limit.reached";
+
 	public String newObjectId();
 
 	public void createBookmark(UserInfos user, String newBookmarkId, JsonObject data,
+			Handler<Either<String, JsonObject>> handler);
+
+	/**
+	 * Add a bookmark, unless the user already reached MAX_BOOKMARKS_PER_USER bookmarks :
+	 * the handler then gets LIMIT_REACHED_ERROR. Used by the v2 API only.
+	 */
+	public void createBookmarkWithLimit(UserInfos user, String newBookmarkId, JsonObject data,
 			Handler<Either<String, JsonObject>> handler);
 
 	public void updateBookmark(UserInfos user, String bookmarkId, JsonObject data,
