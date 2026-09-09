@@ -1,6 +1,8 @@
 {
     "bookmark-widget": "Signets",
     "bookmark.widget.bad.request.invalid.url": "L'addresse saisie est invalide.",
+    "bookmark.widget.bad.request.limit.reached": "Vous ne pouvez pas enregistrer plus de {0} signets.",
+    "bookmark.widget.bad.request.name.too.long": "Le nom ne peut pas dépasser {0} caractères.",
     "bookmark.widget.createform.cancel": "Annuler",
     "bookmark.widget.createform.name": "Nom",
     "bookmark.widget.createform.save": "Enregistrer",
