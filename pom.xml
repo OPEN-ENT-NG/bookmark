@@ -25,7 +25,7 @@
   </repositories>
 
     <properties>
-    <mongodb-helper.version>3.1-SNAPSHOT</mongodb-helper.version>
+    <mongodb-helper.version>3.1-develop-pedago-SNAPSHOT</mongodb-helper.version>
     <postgres-driver.version>45.2.20</postgres-driver.version>
     <entCoreLibsVersion>6.16-SNAPSHOT</entCoreLibsVersion>
     <entCoreVersion>6.17-SNAPSHOT</entCoreVersion>
